@@ -5,10 +5,11 @@ class Renderer extends Component {
   state = {
     greeting: "Hey Mando!",
     chapters: [
-      { Number: 1, Name: "Pilot" },
-      { Number: 2, Name: "The Child" },
-      { Number: 3, Name: "The Sin" },
-      { Number: 4, Name: "Sanctuary" }
+      { Number: 1, Name: "Pilot", isToggleOn: true },
+      { Number: 2, Name: "The Child", isToggleOn: true },
+      { Number: 3, Name: "The Sin", isToggleOn: true },
+      { Number: 4, Name: "Sanctuary", isToggleOn: true },
+      { Number: 5, Name: "The Gunslinger", isToggleOn: true }
     ]
   };
   styles = {
@@ -18,8 +19,22 @@ class Renderer extends Component {
     display: "inline-block"
   };
 
-  chapterClicked = chapter => {
-    console.log(chapter.chapter.Number);
+  chapterClicked = index => {
+    const updatedChapters = this.state.chapters;
+    updatedChapters[index].isToggleOn = false;
+    console.log(updatedChapters);
+    this.setState({
+      isToggleOn: false
+    });
+  };
+
+  // decideRender() {
+  //   if (this.state.chapters.isToggleOn) return <ImageRenderer />;
+  // }
+
+  getButtonClassName = Number => {
+    if (Number === 5) return "btn btn-secondary btn-sm mx-2 disabled ";
+    return "btn btn-info btn-sm mx-2";
   };
 
   render() {
@@ -27,11 +42,11 @@ class Renderer extends Component {
       <React.Fragment>
         <h1 style={this.styles}>{this.state.greeting}</h1>
         <ul style={this.styles}>
-          {this.state.chapters.map(chapter => (
+          {this.state.chapters.map((chapter, i) => (
             <li style={this.styleButton} key={chapter.Number}>
               <button
-                className="btn btn-info mx-2"
-                onClick={() => this.chapterClicked({ chapter })}
+                className={this.getButtonClassName(chapter.Number)}
+                onClick={this.chapterClicked.bind(this)}
               >
                 {chapter.Name}
               </button>
